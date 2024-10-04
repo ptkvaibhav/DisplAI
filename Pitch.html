@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            background: #0f172a;
+            color: #fff;
+        }
+
+        .slide {
+            height: 100vh;
+            width: 100vw;
+            padding: 40px;
+            display: none;
+            position: absolute;
+            background: #0f172a;
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gradient-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.1), transparent 60%);
+            z-index: 1;
+        }
+
+        h1, h2 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 4em;
+        }
+
+        h2 {
+            font-size: 2.8em;
+        }
+
+        .subtitle {
+            font-size: 1.6em;
+            color: #94a3b8;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .feature-box h3 {
+            color: #38bdf8;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+        }
+
+        .feature-box p {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .metric-card {
+            background: rgba(56, 189, 248, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric-label {
+            color: #94a3b8;
+        }
+
+        .metric-value {
+            color: #38bdf8;
+            font-weight: 600;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            margin: 30px 0;
+            padding: 20px;
+            position: relative;
+        }
+
+        .chart-bars {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 200px;
+            padding-top: 20px;
+        }
+
+        .bar {
+            width: 40px;
+            background: linear-gradient(to top, #38bdf8, #818cf8);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #94a3b8;
+            font-size: 0.8em;
+        }
+
+        .bar-value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #38bdf8;
+            font-size: 0.8em;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            gap: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+
+        button:hover {
+            background: rgba(56, 189, 248, 0.2);
+        }
+
+        .slide-indicator {
+            position: fixed;
+            bottom: 40px;
+            left: 40px;
+            color: #94a3b8;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div id="presentation">
+        <!-- Title Slide -->
+        <div class="slide active">
+            <div class="gradient-bg"></div>
+            <div class="content">
+                <h1>Smart Display Advertising</h1>
+                <div class="subtitle">Transform Your Advertising Impact</div>
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <h3>Targeted Reach</h3>
+                        <p>Real-time demographic targeting with AI-powered optimization</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Premium Locations</h3>
+                        <p>High-traffic venues with qualified audience segments</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Measurable Results</h3>
+                        <p>Detailed analytics and performance tracking</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROI Metrics Slide -->
+        <div class="slide">
+            <div class="gradient-bg"></div>
+            <div class="content">
+                <h2>Campaign Performance Metrics</h2>
+                <div class="metric-card">
+                    <div class="metric-row">
+                        <span class="metric-label">Average Viewer Engagement Rate</span>
+                        <span class="metric-value">2-3%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Brand Recall Improvement</span>
+                        <span class="metric-value">45%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Cost per Thousand Impressions (CPM)</span>
+                        <span class="metric-value">$12.50</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Return on Ad Spend (ROAS)</span>
+                        <span class="metric-value">3.8x</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-bars">
+                        <div class="bar" style="height: 60%;">
+                            <span class="bar-label">Traditional</span>
+                            <span class="bar-value">60%</span>
+                        </div>
+                        <div class="bar" style="height: 85%;">
+                            <span class="bar-label">Social</span>
+                            <span class="bar-value">85%</span>
+                        </div>
+                        <div class="bar" style="height: 95%;">
+                            <span class="bar-label">Smart Display</span>
+                            <span class="bar-value">95%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Targeting Capabilities -->
+        <div class="slide">
+            <div class="gradient-bg"></div>
+            <div class="content">
+                <h2>Advanced Targeting Capabilities</h2>
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <h3>Demographics</h3>
+                        <p>Age, gender, and group size analysis</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Time-Based</h3>
+                        <p>Peak hours and day-part optimization</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Behavioral</h3>
+                        <p>Dwell time and interaction patterns</p>
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <h3>Targeting Effectiveness</h3>
+                    <div class="metric-row">
+                        <span class="metric-label">Audience Match Rate</span>
+                        <span class="metric-value">94%</span>
+                    </div>
+                    <div class="metric-row">
+                        <span class="metric-label">Demographic Accuracy</span>
+                        <span class="metric-value">89%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Stories -->
+        <div class="slide">
+            <div class="gradient-bg"></div>
+            <div class="content">
+                <h2>Success Stories</h2>
+                <div class="feature-grid">
+                    <div class="feature-box">
+                        <h3>Retail Brand</h3>
+                        <p>42% increase in store visits</p>
+                        <p>3.2x ROI on ad spend</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Restaurant Chain</h3>
+                        <p>28% boost in dinner traffic</p>
+                        <p>2.8x ROI on campaign</p>
+                    </div>
+                    <div class="feature-box">
+                        <h3>Local Services</h3>
+                        <p>52% more qualified leads</p>
+                        <p>4.1x ROI achievement</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact -->
+        <div class="slide">
+            <div class="gradient-bg"></div>
+            <div class="content">
+                <h2>Start Your Campaign Today</h2>
+                <div class="metric-card">
+                    <h3>Contact Us</h3>
+                    <p style="text-align: center; margin: 20px 0; color: #94a3b8;">
+                        ptkvaibhav@gmail.com<br>
+                        +91 87630-67720<br>
+                        www.displayai.com
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="nav-buttons">
+            <button onclick="prevSlide()">Previous</button>
+            <button onclick="nextSlide()">Next</button>
+        </div>
+        <div class="slide-indicator">
+            <span id="current-slide">1</span>/<span id="total-slides">5</span>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>
